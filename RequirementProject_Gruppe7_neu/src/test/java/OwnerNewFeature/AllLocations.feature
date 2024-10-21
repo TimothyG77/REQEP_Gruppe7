@@ -4,8 +4,7 @@ Feature: Viewing List of Charging Locations
   I want to see a list of all charging locations with their ID numbers
 
   Scenario: Owner views a list of all charging locations
-    Given the owner is logged into their account
-    And the system has the following charging locations:
+    Given the system has the following charging locations:
       | idNumber | location      | type   | status     |
       | 001      | Main Street 1 | AC     | Available  |
       | 002      | Park Avenue 5 | DC     | Occupied   |

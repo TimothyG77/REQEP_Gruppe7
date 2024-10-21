@@ -52,4 +52,5 @@ public abstract class AccountManagement {
     public abstract List<InvoiceManagement> invoiceInformations();
 
 
+    public abstract double getBalance();
 }

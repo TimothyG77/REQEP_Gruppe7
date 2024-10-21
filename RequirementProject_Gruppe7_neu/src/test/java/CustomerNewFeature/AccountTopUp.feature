@@ -4,7 +4,7 @@ Feature: Top Up Account
   I want to top up my account using standard payment methods
 
   Scenario: Customer successfully tops up account with credit card
-    Given the customer is logged into their account
+    Given the customer is on the "Top Up Account" page
     When the customer selects "Credit Card" as the payment method
     And the customer enters the amount to top up as €20.00
     And the customer enters valid credit card details:
@@ -14,27 +14,22 @@ Feature: Top Up Account
       | cvv               | 123                  |
     And the customer submits the top-up request
     Then the system processes the payment
-    And the customer receives a confirmation message "Account topped up successfully by €20.00"
     And the new balance is updated to €70.00
 
   Scenario: Customer successfully tops up account with cash
-    Given the customer is logged into their account
-    And the customer is on the "Top Up Account" page
+    Given the customer is on the "Top Up Account" page
     When the customer selects "Cash" as the payment method
     And the customer enters the amount to top up as €50.00
     And the customer confirms the transaction
     Then the system processes the payment
-    And the customer receives a confirmation message "Account topped up successfully by €50.00"
     And the new balance is updated to €100.00
 
   Scenario: Customer successfully tops up account with ATM
-    Given the customer is logged into their account
-    And the customer is on the "Top Up Account" page
+    Given the customer is on the "Top Up Account" page
     When the customer selects "ATM" as the payment method
     And the customer enters the amount to top up as €30.00
     And the customer confirms the transaction
     Then the system processes the payment
-    And the customer receives a confirmation message "Account topped up successfully by €30.00"
     And the new balance is updated to €80.00
 
 

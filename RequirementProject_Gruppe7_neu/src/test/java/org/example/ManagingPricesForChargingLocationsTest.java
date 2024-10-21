@@ -24,19 +24,26 @@ public class ManagingPricesForChargingLocationsTest {
         System.out.println("Added existing charging location at " + locationName + ".");
     }
 
+    @When("the owner selects the charging location {string}")
+    public void ownerSelectsChargingLocation(String locationName) {
+        selectedChargingLocation = chargingLocations.get(locationName);
+        Assertions.assertNotNull(selectedChargingLocation, "Charging location must exist to be selected.");
+        System.out.println("Owner selected charging location: " + locationName);
+    }
 
-    @When("the owner sets the price per kWh to {string}")
-    public void ownerSetsPricePerKwh(String pricePerKwh) {
-        //Assertions.assertNotNull("Charging location must be selected to set prices", selectedChargingLocation);
-        selectedChargingLocation.setPricePerKwh(pricePerKwh);
+
+    @When("the owner sets the price per kWh to €{double}")
+    public void ownerSetsPricePerKwh(double pricePerKwh) {
+        Assertions.assertNotNull(selectedChargingLocation, "Charging location must be selected to set prices");
+        selectedChargingLocation.setPricePerKwh(String.valueOf(pricePerKwh));
         confirmationMessage = "Price per kWh updated successfully to " + pricePerKwh + ".";
         System.out.println(confirmationMessage);
     }
 
-    @When("the owner sets the price for charging sessions to {string}")
-    public void ownerSetsPriceForChargingSession(String pricePerSession) {
-        //Assertions.assertNotNull("Charging location must be selected to set prices", selectedChargingLocation);
-        selectedChargingLocation.setPricePerSession(pricePerSession);
+    @When("the owner sets the price for charging sessions to €{double}")
+    public void ownerSetsPriceForChargingSession(double pricePerSession) {
+        Assertions.assertNotNull(selectedChargingLocation, "Charging location must be selected to set prices");
+        selectedChargingLocation.setPricePerSession(String.valueOf(pricePerSession));
         confirmationMessage = "Price for charging sessions updated successfully to " + pricePerSession + ".";
         System.out.println(confirmationMessage);
     }
@@ -44,14 +51,14 @@ public class ManagingPricesForChargingLocationsTest {
     @Then("the system updates the price per kWh for {string}")
     public void systemUpdatesPricePerKwhForLocation(String locationName) {
         ChargingLocation location = chargingLocations.get(locationName);
-        //Assertions.assertNotNull("Location must exist in the system", location);
+        Assertions.assertNotNull("Location must exist in the system", String.valueOf(location));
         System.out.println("System updated price per kWh for location: " + locationName);
     }
 
     @Then("the system updates the price for charging sessions at {string}")
     public void systemUpdatesPriceForChargingSessionsAt(String locationName) {
         ChargingLocation location = chargingLocations.get(locationName);
-        //Assertions.assertNotNull("Location must exist in the system", location);
+        Assertions.assertNotNull("Location must exist in the system", String.valueOf(location));
         System.out.println("System updated price for charging sessions at location: " + locationName);
     }
 

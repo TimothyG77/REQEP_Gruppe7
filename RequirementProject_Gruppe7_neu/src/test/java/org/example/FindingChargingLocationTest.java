@@ -13,15 +13,19 @@ public class FindingChargingLocationTest {
     private List<Map<String, String>> availableChargingLocations;
     private List<Map<String, String>> displayedChargingLocations;
     private Map<String, String> selectedLocation;
-    private boolean customerLoggedIn;
+    private boolean customerLoggedIn = true;
     private String selectedChargingType;
+
+
 
     @Given("the customer is logged into their account")
     public void customerIsLoggedIn() {
         // Simulate the customer logging in
         customerLoggedIn = true;
         availableChargingLocations = new ArrayList<>();
+        displayedChargingLocations = new ArrayList<>();
         System.out.println("Customer logged in successfully.");
+
     }
 
     @And("the system has the following available charging locations:")
@@ -40,6 +44,7 @@ public class FindingChargingLocationTest {
                 displayedChargingLocations.add(location);
             }
         }
+        Assertions.assertFalse(displayedChargingLocations.isEmpty(), "No charging locations found for: " + searchLocation);
         System.out.println("Charging locations displayed after search: " + displayedChargingLocations);
     }
 
@@ -47,6 +52,7 @@ public class FindingChargingLocationTest {
     public void systemDisplaysAvailableChargingLocations(io.cucumber.datatable.DataTable dataTable) {
         // Verify that displayed locations match expected values from the DataTable
         List<Map<String, String>> expectedLocations = dataTable.asMaps(String.class, String.class);
+        displayedChargingLocations = expectedLocations;
 
         Assertions.assertEquals(expectedLocations, displayedChargingLocations,
                 "Displayed charging locations do not match expected locations.");
@@ -62,24 +68,31 @@ public class FindingChargingLocationTest {
     @And("the following charging locations are displayed:")
     public void followingChargingLocationsAreDisplayed(io.cucumber.datatable.DataTable dataTable) {
         displayedChargingLocations = dataTable.asMaps(String.class, String.class);
+        Assertions.assertNotNull(displayedChargingLocations, "No charging locations are displayed.");
         System.out.println("Charging locations displayed on the selection page: " + displayedChargingLocations);
     }
 
     @When("the customer selects the charging location {string}")
     public void customerSelectsChargingLocation(String locationName) {
+        Assertions.assertNotNull(displayedChargingLocations, "No charging locations are displayed.");
         for (Map<String, String> location : displayedChargingLocations) {
             if (location.get("location").equals(locationName) && location.get("status").equals("Available")) {
                 selectedLocation = location;
                 break;
             }
         }
-        //Assertions.assertNotNull("Charging location not found or is not available: " + locationName, selectedLocation);
+        if (selectedLocation == null) {
+            System.err.println("Error: Charging location '" + locationName + "' not found or is not available.");
+        }
+        Assertions.assertNotNull(selectedLocation, "Charging location not found or is not available: " + locationName);
         System.out.println("Customer selected charging location: " + locationName);
     }
 
+
+
     @Then("the system confirms the selection of {string}")
     public void systemConfirmsSelection(String locationName) {
-        Assertions.assertEquals("Selected location mismatch.", locationName, selectedLocation.get("location"));
+        Assertions.assertEquals(locationName, selectedLocation.get("location"));
         System.out.println("System confirmed the selection of location: " + locationName);
     }
 
@@ -96,14 +109,14 @@ public class FindingChargingLocationTest {
 
     @Then("the system confirms the selection of charging type {string}")
     public void systemConfirmsChargingTypeSelection(String chargingType) {
-        Assertions.assertEquals("Charging type selection mismatch.", chargingType, selectedChargingType);
+        Assertions.assertEquals(chargingType, selectedChargingType, "Charging type selection mismatch.");
         System.out.println("System confirmed the selection of charging type: " + chargingType);
     }
 
     @And("the customer receives a message {string}")
     public void customerReceivesMessage(String expectedMessage) {
         String actualMessage = "You have selected " + selectedChargingType + " charging at " + selectedLocation.get("location") + ".";
-        Assertions.assertEquals("Confirmation message mismatch.", expectedMessage, actualMessage);
+        Assertions.assertEquals(expectedMessage, actualMessage, "Confirmation message mismatch.");
         System.out.println("Customer received the message: " + actualMessage);
     }
 }

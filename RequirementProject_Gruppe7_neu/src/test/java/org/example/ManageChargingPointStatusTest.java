@@ -17,6 +17,10 @@ public class ManageChargingPointStatusTest {
     @Given("the owner has an existing charging point at {string}")
     public void ownerHasExistingChargingPoint(String location) {
 
+        if (chargingPoints == null) {
+            chargingPoints = new HashMap<>();  // Initialisiere die Map, falls sie noch nicht initialisiert wurde
+        }
+
         chargingPoints.put(location, "Available");
         System.out.println("Charging point added at location: " + location);
     }
@@ -41,8 +45,7 @@ public class ManageChargingPointStatusTest {
         chargingPoints.put(location, updatedStatus);
 
 
-        Assertions.assertEquals("Status update failed for location: " +
-                location, updatedStatus, chargingPoints.get(location));
+        Assertions.assertEquals(updatedStatus, chargingPoints.get(location));
         System.out.println("System updated the status of charging point at " + location + " to " + updatedStatus);
     }
 }

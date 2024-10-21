@@ -49,6 +49,19 @@ public class Owner extends AccountManagement {
         return new ArrayList<>();
     }
 
+    @Override
+    public double getBalance() {
+        return 0;
+    }
+
+    public String getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails() {
+        this.paymentDetails = paymentDetails;
+    }
+
 
 }
 

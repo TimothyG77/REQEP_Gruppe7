@@ -15,7 +15,7 @@ public class AddingChargingPointsTest {
         chargingPoints = new HashMap<>();
     }
 
-    @Given("the owner is on the Add Charging Point page")
+    @Given("the owner is on the {string} page")
     public void ownerIsOnPage(String pageName) {
         Assertions.assertEquals("Add Charging Point", pageName);
         System.out.println("Owner is on the " + pageName + " page.");
@@ -50,9 +50,14 @@ public class AddingChargingPointsTest {
 
     @And("the owner receives a confirmation message {string}")
     public void ownerReceivesConfirmationMessageAfterAdding(String expectedMessage) {
-        String actualMessage = (chargingPoints.containsKey("Main Street 1") && chargingPoints.get("Main Street 1").getType().equals("AC")) ?
-                "AC Charging Point added successfully." : "DC Charging Point added successfully.";
-        Assertions.assertEquals("Confirmation message mismatch.", expectedMessage, actualMessage);
+        String lastAddedLocation = null;
+        for (String location : chargingPoints.keySet()) {
+            lastAddedLocation = location;
+        }
+        String chargingPointType = chargingPoints.get(lastAddedLocation).getType();
+        String actualMessage = chargingPointType + " Charging Point added successfully.";
+
+        Assertions.assertEquals(expectedMessage, actualMessage, "Confirmation message mismatch.");
         System.out.println("Owner received confirmation message: " + actualMessage);
     }
 

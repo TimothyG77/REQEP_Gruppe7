@@ -4,11 +4,11 @@ Feature: Managing and Viewing Invoices
   I want to choose an invoice number and view a detailed invoice list
 
   Scenario: Owner chooses an invoice number to view details
-    Given the owner is logged into their account
-    And the system has the following invoices:
+    Given the system has the following invoices:
       | invoiceNumber | location      | chargingPoint | chargingMode | duration   | chargedEnergy | price   |
       | INV123456     | Main Street 1 | AC            | AC           | 1 hour    | 10 kWh       | €3.00  |
       | INV123457     | Park Avenue 5 | DC            | DC           | 30 minutes | 5 kWh        | €2.50  |
+    And the owner is logged in
     When the owner selects invoice number "INV123456"
     Then the system displays the details for invoice "INV123456":
       | field            | value            |
@@ -20,8 +20,7 @@ Feature: Managing and Viewing Invoices
       | price            | €3.00            |
 
   Scenario: Owner views the invoice list with all details
-    Given the owner is logged into their account
-    And the system has the following invoices:
+    Given the system has the following invoices:
       | invoiceNumber | location      | chargingPoint | chargingMode | duration   | chargedEnergy | price   |
       | INV123456     | Main Street 1 | AC            | AC           | 1 hour    | 10 kWh       | €3.00  |
       | INV123457     | Park Avenue 5 | DC            | DC           | 30 minutes | 5 kWh        | €2.50  |

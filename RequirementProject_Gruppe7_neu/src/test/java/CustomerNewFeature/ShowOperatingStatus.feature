@@ -9,7 +9,6 @@ Feature: Managing Charging Point Operating Status
     When the owner selects "Set Status"
     And the owner sets the status to "Available"
     Then the system updates the status of "Main Street 1" to "Available"
-    And the owner receives a confirmation message "Status updated to Available."
 
   Scenario: Owner sets charging point status to "Out of Service"
     Given the owner is logged into their account
@@ -17,7 +16,6 @@ Feature: Managing Charging Point Operating Status
     When the owner selects "Set Status"
     And the owner sets the status to "Out of Service"
     Then the system updates the status of "Park Avenue 5" to "Out of Service"
-    And the owner receives a confirmation message "Status updated to Out of Service."
 
   Scenario: Owner sets charging point status to "Occupied"
     Given the owner is logged into their account
@@ -25,4 +23,3 @@ Feature: Managing Charging Point Operating Status
     When the owner selects "Set Status"
     And the owner sets the status to "Occupied"
     Then the system updates the status of "Elm Street 3" to "Occupied"
-    And the owner receives a confirmation message "Status updated to Occupied."

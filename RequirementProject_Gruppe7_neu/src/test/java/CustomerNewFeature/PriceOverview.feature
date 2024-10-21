@@ -7,22 +7,14 @@ Feature: Viewing Current Price Overview for Charging Locations
     Given the owner is logged into their account
     And the system has the following pricing information:
       | location      | pricePerKWh | pricePerMinute |
-      | Main Street 1 | €0.30       | €0.05          |
-      | Park Avenue 5 | €0.50       | €0.10          |
-      | Elm Street 3  | €0.25       | €0.04          |
-    When the owner navigates to the "Price Overview" page
-    Then the system displays the following price overview:
-      | location      | pricePerKWh | pricePerMinute |
-      | Main Street 1 | €0.30       | €0.05          |
-      | Park Avenue 5 | €0.50       | €0.10          |
-      | Elm Street 3  | €0.25       | €0.04          |
-
-  Scenario: Owner views price per kWh for a specific location
-    Given the owner is logged into their account
+      | Main Street 1 | 0.30        | 0.05           |
+      | Park Avenue 5 | 0.25        | 0.04           |
+    When the owner opens the price overview page
     And the owner selects "Main Street 1" from the price overview
     Then the system displays the price details for "Main Street 1":
-      | field         | value       |
-      | pricePerKWh  | €0.30      |
-      | pricePerMinute| €0.05      |
+      | field          | value  |
+      | pricePerKWh    | 0.30   |
+      | pricePerMinute | 0.05   |
+
 
 

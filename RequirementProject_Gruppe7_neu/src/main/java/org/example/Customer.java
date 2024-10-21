@@ -10,6 +10,14 @@ public class Customer extends AccountManagement {
         this.customerId = customerId;
     }
 
+    public String getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails() {
+        this.paymentDetails = paymentDetails;
+    }
+
 
     public String getCustomerId() {
         return customerId;
@@ -55,5 +63,10 @@ public class Customer extends AccountManagement {
     public List<InvoiceManagement> invoiceInformations() {
         System.out.println("Viewing all invoice informations.");
         return null;
+    }
+
+    @Override
+    public double getBalance() {
+        return 0;
     }
 }

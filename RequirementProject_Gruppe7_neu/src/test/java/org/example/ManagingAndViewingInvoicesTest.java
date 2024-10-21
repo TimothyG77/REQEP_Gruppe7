@@ -32,25 +32,32 @@ public class ManagingAndViewingInvoicesTest {
         });
     }
 
+    @Given("the owner is logged in")
+    public void ownerIsLoggedIn() {
+        ownerStatus = "logged_in";  // Setzt den Status auf "logged_in"
+        System.out.println("Owner is logged in.");
+    }
+
+
     @When("the owner selects invoice number {string}")
     public void ownerSelectsInvoiceNumber(String invoiceNumber) {
-        Assertions.assertEquals("logged_in", ownerStatus);
+        Assertions.assertEquals("logged_in", ownerStatus, "Owner must be logged in to select an invoice.");
         selectedInvoice = invoices.get(invoiceNumber);
-        //Assertions.assertNotNull("Invoice should exist in the system", selectedInvoice);
+        Assertions.assertNotNull(selectedInvoice, "Invoice should exist in the system");
         System.out.println("Owner selected invoice number: " + invoiceNumber);
     }
 
     @Then("the system displays the details for invoice {string}:")
     public void systemDisplaysDetailsForInvoice(String invoiceNumber, io.cucumber.datatable.DataTable expectedDetails) {
-        //Assertions.assertNotNull("Invoice must be selected to view details", selectedInvoice);
-        Assertions.assertEquals("Invoice number must match", invoiceNumber, selectedInvoice.getInvoiceNumber());
+        Assertions.assertNotNull(selectedInvoice, "Invoice must be selected to view details");
+        Assertions.assertEquals(invoiceNumber, selectedInvoice.getInvoiceNumber(), "Invoice number must match");
 
         expectedDetails.asMaps().forEach(expectedRow -> {
             String field = expectedRow.get("field");
             String expectedValue = expectedRow.get("value");
             String actualValue = selectedInvoice.getFieldValue(field);
 
-            Assertions.assertEquals("Field " + field + " must match", expectedValue, actualValue);
+            Assertions.assertEquals(expectedValue, actualValue, "Field " + field + " must match");
             System.out.println(field + ": " + actualValue);
         });
     }
@@ -60,7 +67,7 @@ public class ManagingAndViewingInvoicesTest {
         expectedInvoiceList.asMaps().forEach(expectedRow -> {
             String invoiceNumber = expectedRow.get("invoiceNumber");
             Invoice invoice = invoices.get(invoiceNumber);
-            //Assertions.assertNotNull("Invoice must exist in the system", invoice);
+            Assertions.assertNotNull(invoice, "Invoice must exist in the system");
 
             String location = expectedRow.get("location");
             String chargingPoint = expectedRow.get("chargingPoint");
@@ -69,12 +76,12 @@ public class ManagingAndViewingInvoicesTest {
             String chargedEnergy = expectedRow.get("chargedEnergy");
             String price = expectedRow.get("price");
 
-            Assertions.assertEquals("Location must match", location, invoice.getLocation());
-            Assertions.assertEquals("Charging Point must match", chargingPoint, invoice.getChargingPoint());
-            Assertions.assertEquals("Charging Mode must match", chargingMode, invoice.getChargingMode());
-            Assertions.assertEquals("Duration must match", duration, invoice.getDuration());
-            Assertions.assertEquals("Charged Energy must match", chargedEnergy, invoice.getChargedEnergy());
-            Assertions.assertEquals("Price must match", price, invoice.getPrice());
+            Assertions.assertEquals(location, invoice.getLocation(), "Location must match");
+            Assertions.assertEquals(chargingPoint, invoice.getChargingPoint(), "Charging Point must match");
+            Assertions.assertEquals(chargingMode, invoice.getChargingMode(), "Charging Mode must match");
+            Assertions.assertEquals(duration, invoice.getDuration(), "Duration must match");
+            Assertions.assertEquals(chargedEnergy, invoice.getChargedEnergy(), "Charged Energy must match");
+            Assertions.assertEquals(price, invoice.getPrice(), "Price must match");
 
             System.out.println("Invoice " + invoiceNumber + ": Location - " + location + ", Charging Point - " + chargingPoint +
                     ", Charging Mode - " + chargingMode + ", Duration - " + duration + ", Charged Energy - " + chargedEnergy +

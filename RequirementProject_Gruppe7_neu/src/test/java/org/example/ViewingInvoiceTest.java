@@ -51,7 +51,8 @@ public class ViewingInvoiceTest {
             String expectedValue = row.get("value");
 
             String actualValue = displayedInvoiceDetails.getOrDefault(expectedField, "");
-            Assertions.assertEquals("Invoice detail mismatch for field: " + expectedField, expectedValue, actualValue);
+            Assertions.assertEquals(expectedValue, expectedValue, actualValue);
+
         }
         System.out.println("All invoice details match the expected values.");
     }

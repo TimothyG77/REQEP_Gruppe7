@@ -21,7 +21,7 @@ public class ViewingPriceOverviewTest {
         System.out.println("Owner logged in successfully.");
     }
 
-    @And("the system has the following pricing information:")
+    @When("the system has the following pricing information:")
     public void systemHasPricingInformation(io.cucumber.datatable.DataTable dataTable) {
         for (Map<String, String > row : dataTable.asMaps(String.class, String.class)) {
             String location = row.get("location");
@@ -30,6 +30,8 @@ public class ViewingPriceOverviewTest {
             pricingDetails.put("pricePerMinute", row.get("pricePerMinute"));
 
             pricingInformation.put(location, pricingDetails);
+            System.out.println("Stored pricing details for location: " + location + " -> " + pricingDetails);
+
         }
         System.out.println("Pricing information stored in the system: " + pricingInformation);
     }
@@ -46,34 +48,47 @@ public class ViewingPriceOverviewTest {
                 //Retrieve actual pricing details
                 Map<String, String> actualPricingDetails = pricingInformation.get(expectedLocation);
 
-                //Assertions.assertNotNull("Pricing information for location not found: " + expectedLocation, actualPricingDetails);
-                Assertions.assertEquals("Mismatch in price per kWh for location: " + expectedLocation,
-                        expectedPricePerKWh, actualPricingDetails.get("pricePerKWh"));
-                Assertions.assertEquals("Mismatch in price per minute for location: " + expectedLocation,
-                        expectedPricePerMinute, actualPricingDetails.get("pricePerMinute"));
+                Assertions.assertNotNull(actualPricingDetails, "Pricing information for location not found: " + expectedLocation);
+                Assertions.assertEquals(expectedPricePerKWh, actualPricingDetails.get("pricePerKWh"),
+                        "Mismatch in price per kWh for location: " + expectedLocation);
+                Assertions.assertEquals(expectedPricePerMinute, actualPricingDetails.get("pricePerMinute"),
+                        "Mismatch in price per minute for location: " + expectedLocation);
             }
             System.out.println("All pricing information matches the expected values.");
         }
     }
+
+    @When("the owner opens the price overview page")
+    public void ownerOpensPriceOverviewPage() {
+        overviewPageOpened = true;  // Sicherstellen, dass die Übersicht geöffnet ist
+        System.out.println("Price overview page opened.");
+    }
+
 
     @And("the owner selects {string} from the price overview")
     public void ownerSelectsLocationFromOverview(String location) {
         // Simulate selecting a specific location from the overview
         if (overviewPageOpened) {
             selectedLocationDetails = pricingInformation.get(location);
-            //Assertions.assertNotNull("Selected location not found in the system: " + location, selectedLocationDetails);
+            Assertions.assertNotNull(selectedLocationDetails, "Selected location not found in the system: " + location);
             System.out.println("Owner selected location: " + location);
+        } else {
+            System.out.println("Overview page not opened.");
+            Assertions.fail("Price overview page must be opened before selecting a location.");
+
         }
     }
 
     @Then("the system displays the price details for {string}:")
     public void systemDisplaysPriceDetailsForLocation(String location, io.cucumber.datatable.DataTable dataTable) {
+        Assertions.assertNotNull(selectedLocationDetails, "No location details selected.");
         for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
             String expectedField = row.get("field");
             String expectedValue = row.get("value");
 
             String actualValue = selectedLocationDetails.getOrDefault(expectedField, "");
-            Assertions.assertEquals("Mismatch in pricing detail for field: " + expectedField, expectedValue, actualValue);
+            Assertions.assertEquals(expectedValue, actualValue, "Mismatch in pricing detail for field: " + expectedField);
+
         }
         System.out.println("All displayed price details match the expected values for location: " + location);
     }
