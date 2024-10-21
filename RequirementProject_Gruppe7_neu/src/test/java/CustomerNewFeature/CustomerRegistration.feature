@@ -21,6 +21,7 @@ Feature: Customer Registration
     #########################Error-Case##########################
     #############################################################
     #############################################################
+
   Scenario: Customer fails to register with missing payment details
     Given the customer is on the registration page
     When the customer enters the following details:

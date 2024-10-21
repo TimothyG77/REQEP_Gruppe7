@@ -12,6 +12,8 @@ public class ViewingPriceOverviewTest {
     private Map<String, String> selectedLocationDetails;
     private boolean ownerLoggedIn;
     private boolean overviewPageOpened;
+    private String errorMessage;
+
 
     @Given("the owner is logged into their account")
     public void ownerIsLoggedIn() {
@@ -70,26 +72,37 @@ public class ViewingPriceOverviewTest {
         // Simulate selecting a specific location from the overview
         if (overviewPageOpened) {
             selectedLocationDetails = pricingInformation.get(location);
-            Assertions.assertNotNull(selectedLocationDetails, "Selected location not found in the system: " + location);
-            System.out.println("Owner selected location: " + location);
+            if (selectedLocationDetails == null) {
+                errorMessage = "No pricing information available for " + location;
+                System.err.println(errorMessage);
+            } else {
+                System.out.println("Owner selected location: " + location);
+            }
         } else {
             System.out.println("Overview page not opened.");
             Assertions.fail("Price overview page must be opened before selecting a location.");
-
         }
     }
 
     @Then("the system displays the price details for {string}:")
     public void systemDisplaysPriceDetailsForLocation(String location, io.cucumber.datatable.DataTable dataTable) {
-        Assertions.assertNotNull(selectedLocationDetails, "No location details selected.");
-        for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
-            String expectedField = row.get("field");
-            String expectedValue = row.get("value");
+        if (selectedLocationDetails == null) {
+            Assertions.fail("No price details available for selected location: " + location);
+        } else {
+            for (Map<String, String> row : dataTable.asMaps(String.class, String.class)) {
+                String expectedField = row.get("field");
+                String expectedValue = row.get("value");
 
-            String actualValue = selectedLocationDetails.getOrDefault(expectedField, "");
-            Assertions.assertEquals(expectedValue, actualValue, "Mismatch in pricing detail for field: " + expectedField);
-
+                String actualValue = selectedLocationDetails.getOrDefault(expectedField, "");
+                Assertions.assertEquals(expectedValue, actualValue, "Mismatch in pricing detail for field: " + expectedField);
+            }
+            System.out.println("All displayed price details match the expected values for location: " + location);
         }
-        System.out.println("All displayed price details match the expected values for location: " + location);
+    }
+
+    @Then("the system displays an error like {string}")
+    public void systemDisplaysErrorMessage(String expectedErrorMessage) {
+        Assertions.assertEquals(expectedErrorMessage, errorMessage, "Error message mismatch.");
+        System.err.println("Error message displayed: " + errorMessage);
     }
 }

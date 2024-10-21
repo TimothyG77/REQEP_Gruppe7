@@ -16,6 +16,22 @@ Feature: Viewing Current Price Overview for Charging Locations
       | pricePerKWh    | 0.30   |
       | pricePerMinute | 0.05   |
 
+    #############################################################
+    #############################################################
+    #########################Error-Case##########################
+    #############################################################
+    #############################################################
+
+  Scenario: Error - No pricing information available for selected location
+    Given the owner is logged into their account
+    And the system has the following pricing information:
+      | location      | pricePerKWh | pricePerMinute |
+      | Main Street 1 | 0.30        | 0.05           |
+      | Park Avenue 5 | 0.25        | 0.04           |
+    When the owner opens the price overview page
+    And the owner selects "Central Plaza 2" from the price overview
+    Then the system displays an error like "No pricing information available for Central Plaza 2"
+
 
 
 

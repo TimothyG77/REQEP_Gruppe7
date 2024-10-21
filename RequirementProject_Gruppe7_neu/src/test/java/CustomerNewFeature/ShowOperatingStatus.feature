@@ -4,7 +4,7 @@ Feature: Managing Charging Point Operating Status
   I want to show the operating status of charging points as "Available", "Out of Service", or "Occupied"
 
   Scenario: Owner sets charging point status to "Available"
-    Given the owner is logged into their account
+    Given the owner is logged on the account
     And the owner has an existing charging point at "Main Street 1"
     When the owner selects "Set Status"
     And the owner sets the status to "Available"
@@ -34,6 +34,6 @@ Feature: Managing Charging Point Operating Status
     Given the owner is logged into their account
     And the owner has an existing charging point at "Main Street 1"
     When the owner sets the status to "InvalidStatus"
-    Then the system rejects the status update with an error message "Invalid status value"
+    Then the system rejects the new status update with an error message "Invalid status value"
 
 

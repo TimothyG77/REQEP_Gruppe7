@@ -30,5 +30,5 @@ Feature: Managing Charging Point Status
   Scenario: Owner attempts to set a charging point status without logging in
     Given the owner is not logged into their account
     When the owner selects "Set Status"
-    Then the system rejects the action with an error message "Owner must be logged in"
+    Then the system rejects the new status update with an error message "Owner must be logged in"
 
