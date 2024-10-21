@@ -11,6 +11,7 @@ public class ManagingAndViewingInvoicesTest {
     private String ownerStatus;
     private Map<String, Invoice> invoices;
     private Invoice selectedInvoice;
+    private String systemMessage;
 
     public ManagingAndViewingInvoicesTest() {
         invoices = new HashMap<>();
@@ -32,10 +33,33 @@ public class ManagingAndViewingInvoicesTest {
         });
     }
 
+    @Given("the system has no invoices")
+    public void systemHasNoInvoices() {
+        invoices.clear();  // Ensure no invoices exist in the system
+        System.err.println("The system has no invoices.");
+    }
+
     @Given("the owner is logged in")
     public void ownerIsLoggedIn() {
         ownerStatus = "logged_in";  // Setzt den Status auf "logged_in"
         System.out.println("Owner is logged in.");
+    }
+
+    @When("the owner in the system navigates to the {string} page")
+    public void ownerNavigatesToInvoiceListPage(String page) {
+        Assertions.assertEquals("Invoice List", page, "The page must be 'Invoice List'.");
+        if (invoices.isEmpty()) {
+            systemMessage = "No invoices available";
+        }
+        System.out.println("Owner navigated to the Invoice List page.");
+    }
+
+
+
+    @Then("the system displays a message {string}")
+    public void systemDisplaysMessage(String expectedMessage) {
+        Assertions.assertEquals(expectedMessage, systemMessage);
+        System.err.println("System displayed message: " + systemMessage);
     }
 
 

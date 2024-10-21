@@ -26,3 +26,21 @@ Feature: Adding AC/DC Charging Points
     And the owner submits the form
     Then the system adds the new "DC" charging point to "Park Avenue 5"
     And the owner receives a confirmation message "DC Charging Point added successfully."
+
+     ############################################################
+     ############################################################
+     ########################Error-Case##########################
+     ############################################################
+     ############################################################
+
+  Scenario: Owner fails to add a charging point with missing location
+    Given the owner is on the "Add Charging Point" page
+    When the owner enters the following details:
+      | field      | value      |
+      | location   |            |
+      | type       | AC         |
+      | power      | 11 kW      |
+      | status     | Available  |
+    And the owner submits the form
+    Then the system rejects the submission with an error message "Location is required"
+

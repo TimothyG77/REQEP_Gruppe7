@@ -19,3 +19,16 @@ Feature: Viewing Invoice After Charging Session
       | totalPrice       | €5.00              |
       | chargingPoint     | Park Avenue 5      |
       | duration         | 1 hour             |
+
+    #############################################################
+    #############################################################
+    #########################Error-Case##########################
+    #############################################################
+    #############################################################
+
+  Scenario: Customer attempts to view an invoice with invalid invoice number
+    Given the customer has completed a charging session at "Park Avenue 5"
+    When the customer navigates to the "Invoice" page
+    Then the system prints the following error message "Invoice not found"
+
+

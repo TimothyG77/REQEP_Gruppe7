@@ -62,4 +62,8 @@ public class PaymentDetails {
     public void setAtmTransactionId(String atmTransactionId) {
         this.atmTransactionId = atmTransactionId;
     }
+
+    public boolean isValid() {
+        return false;
+    }
 }

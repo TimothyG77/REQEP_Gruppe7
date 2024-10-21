@@ -32,4 +32,23 @@ Feature: Top Up Account
     Then the system processes the payment
     And the new balance is updated to €80.00
 
+   ##############################################################
+   ##############################################################
+   ##########################Error-Case##########################
+   ##############################################################
+   ##############################################################
+
+  Scenario: Customer fails to top up account with invalid credit card details
+    Given the customer is on the "Top Up Account" page
+    When the customer selects "Credit Card" as the payment method
+    And the customer enters the amount to top up as €20.00
+    And the customer enters invalid credit card details:
+      | field      | value             |
+      | cardNumber | 1111 2222 3333 4444|
+      | expiryDate | 12/22             |
+      | cvv        | 000               |
+    And the customer submits the top-up request
+    Then the system rejects the payment with an error message "Payment failed due to invalid card details"
+
+
 

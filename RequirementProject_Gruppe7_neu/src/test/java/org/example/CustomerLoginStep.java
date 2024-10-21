@@ -13,6 +13,7 @@ public class CustomerLoginStep {
     private String passwordInput;
     private boolean isAuthenticated;
     private String welcomeMessage;
+    private String errorMessage;
 
     @Given("the customer is on the login page")
     public void customerOnLoginPage() {
@@ -57,8 +58,10 @@ public class CustomerLoginStep {
                 (phoneInput != null && phoneInput.equals("+491234567890") && passwordInput.equals("Password!123"))) {
             isAuthenticated = true;
         } else {
-            System.out.println("Authentication failed with email: " + emailInput + " and phone: " + phoneInput);
             isAuthenticated = false;
+            errorMessage = "Invalid credentials";
+            System.out.println("Authentication failed with email: " + emailInput + " and phone: " + phoneInput);
+
         }
         System.out.println("Customer submitted the login form.");
     }
@@ -87,5 +90,12 @@ public class CustomerLoginStep {
         }
         Assertions.assertEquals("Welcome back, Customer!", expectedMessage, welcomeMessage);
         System.out.println("System displays the welcome message: " + welcomeMessage);
+    }
+
+    @Then("the system rejects the login attempt with an error message {string}")
+    public void systemRejectsLoginAttempt(String expectedErrorMessage) {
+        // Check that the system gives the correct error message when login fails
+        Assertions.assertEquals(expectedErrorMessage, errorMessage);
+        System.err.println("Error message: " + errorMessage);
     }
 }

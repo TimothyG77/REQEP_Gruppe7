@@ -25,4 +25,21 @@ Feature: Customer Login
     And the customer is redirected to their account dashboard
     And the system displays a welcome message "Welcome back, Customer!"
 
+    #############################################################
+    #############################################################
+    #########################Error-Case##########################
+    #############################################################
+    #############################################################
+
+  Scenario: Customer fails to log in with incorrect password
+    Given the customer is on the login page
+    When the customer enters the following login details:
+      | field    | value                 |
+      | email    | customer@gmail.com     |
+      | password | WrongPassword          |
+    And the customer submits the login form
+    Then the system rejects the login attempt with an error message "Invalid credentials"
+
+
+
 

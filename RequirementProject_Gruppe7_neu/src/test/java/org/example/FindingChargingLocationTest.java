@@ -15,6 +15,7 @@ public class FindingChargingLocationTest {
     private Map<String, String> selectedLocation;
     private boolean customerLoggedIn = true;
     private String selectedChargingType;
+    private String errorMessage;
 
 
 
@@ -44,8 +45,17 @@ public class FindingChargingLocationTest {
                 displayedChargingLocations.add(location);
             }
         }
-        Assertions.assertFalse(displayedChargingLocations.isEmpty(), "No charging locations found for: " + searchLocation);
-        System.out.println("Charging locations displayed after search: " + displayedChargingLocations);
+        if (displayedChargingLocations.isEmpty()) {
+            errorMessage = "No charging locations found";
+            System.err.println("No charging locations found for: " + searchLocation);
+        }
+    }
+
+    @Then("the system displays an error message {string}")
+    public void systemDisplaysErrorMessage(String expectedErrorMessage) {
+        // Verify that the error message matches the expected message
+        Assertions.assertEquals(expectedErrorMessage, errorMessage);
+        System.err.println("Error message: " + errorMessage);
     }
 
     @Then("the system displays the following available charging locations:")

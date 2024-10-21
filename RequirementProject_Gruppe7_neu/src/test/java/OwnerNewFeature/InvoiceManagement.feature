@@ -29,3 +29,15 @@ Feature: Managing and Viewing Invoices
       | invoiceNumber | location      | chargingPoint | chargingMode | duration   | chargedEnergy | price   |
       | INV123456     | Main Street 1 | AC            | AC           | 1 hour    | 10 kWh       | €3.00  |
       | INV123457     | Park Avenue 5 | DC            | DC           | 30 minutes | 5 kWh        | €2.50  |
+
+      ############################################################
+      ############################################################
+      #######################Error-Case###########################
+      ############################################################
+      ############################################################
+
+  Scenario: Owner views the invoice list but no invoices exist
+    Given the system has no invoices
+    When the owner in the system navigates to the "Invoice List" page
+    Then the system displays a message "No invoices available"
+

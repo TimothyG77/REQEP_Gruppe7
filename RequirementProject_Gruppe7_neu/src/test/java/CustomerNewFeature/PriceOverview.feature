@@ -18,3 +18,5 @@ Feature: Viewing Current Price Overview for Charging Locations
 
 
 
+
+

@@ -12,6 +12,7 @@ public class ManagingPricesForChargingLocationsTest {
     private Map<String, ChargingLocation> chargingLocations;
     private ChargingLocation selectedChargingLocation;
     private String confirmationMessage;
+    private String errorMessage;
 
     public ManagingPricesForChargingLocationsTest() {
         chargingLocations = new HashMap<>();
@@ -27,10 +28,19 @@ public class ManagingPricesForChargingLocationsTest {
     @When("the owner selects the charging location {string}")
     public void ownerSelectsChargingLocation(String locationName) {
         selectedChargingLocation = chargingLocations.get(locationName);
-        Assertions.assertNotNull(selectedChargingLocation, "Charging location must exist to be selected.");
-        System.out.println("Owner selected charging location: " + locationName);
+        if (selectedChargingLocation == null) {
+            errorMessage = "Charging location not found";
+            System.err.println("Error: " + errorMessage);
+        } else {
+            System.out.println("Owner selected charging location: " + locationName);
+        }
     }
 
+    @Then("the system displays following error message {string}")
+    public void systemDisplaysErrorMessage(String expectedErrorMessage) {
+        Assertions.assertEquals(expectedErrorMessage, errorMessage, "Error message must match expected message");
+        System.err.println("System displayed error message: " + errorMessage);
+    }
 
     @When("the owner sets the price per kWh to €{double}")
     public void ownerSetsPricePerKwh(double pricePerKwh) {

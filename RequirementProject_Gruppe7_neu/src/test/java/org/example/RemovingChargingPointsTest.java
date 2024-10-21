@@ -13,6 +13,8 @@ public class RemovingChargingPointsTest {
     private ChargingPoint selectedChargingPoint;
     private String confirmationMessage;
 
+    private String errorMessage;
+
     public RemovingChargingPointsTest() {
         chargingPoints = new HashMap<>();
     }
@@ -43,9 +45,14 @@ public class RemovingChargingPointsTest {
     public void ownerSelectsRemoveChargingPoint(String action, String locationName) {
         Assertions.assertEquals("logged_in", ownerStatus, "Owner must be logged in to remove a charging point.");
         Assertions.assertEquals("Remove Charging Point", action);
+
         selectedChargingPoint = chargingPoints.get(locationName);
-        Assertions.assertNotNull(selectedChargingPoint, "Charging point must exist to remove.");
-        System.out.println("Owner selected to remove charging point at " + locationName + ".");
+        if (selectedChargingPoint == null) {
+            errorMessage = "Charging point not found";
+            System.err.println("Error: " + errorMessage);
+        } else {
+            System.out.println("Owner selected to remove charging point at " + locationName + ".");
+        }
     }
 
     @When("the owner confirms the removal")
@@ -67,6 +74,13 @@ public class RemovingChargingPointsTest {
         Assertions.assertNull(chargingPoints.get(locationName), "DC Charging Point must be removed from the system");
         System.out.println("System removed the DC charging point from " + locationName);
     }
+
+    @Then("the system displays an simple error message {string}")
+    public void systemDisplaysErrorMessage(String expectedErrorMessage) {
+        Assertions.assertEquals(expectedErrorMessage, errorMessage, "Error message must match expected message");
+        System.err.println("System displayed error message: " + errorMessage);
+    }
+
 
 
     private class ChargingPoint {

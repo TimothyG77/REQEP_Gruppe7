@@ -15,6 +15,7 @@ public class CustomerRegistrationStep {
     private String paymentDetailsInput;
     private boolean isRegistered;
     private String confirmationMessage;
+    private String errorMessage;
 
     @Given("the customer is on the registration page")
     public void customerOnRegistrationPage() {
@@ -62,6 +63,7 @@ public class CustomerRegistrationStep {
             isRegistered = true;
         } else {
             isRegistered = false;
+            errorMessage = "Payment details are required";
         }
         System.out.println("Customer submitted the registration form.");
     }
@@ -77,7 +79,14 @@ public class CustomerRegistrationStep {
         if (isRegistered) {
             confirmationMessage = "Registration successful!";
         }
-        //Assertions.assertEquals(expectedMessage, confirmationMessage);
+        Assertions.assertEquals(expectedMessage, confirmationMessage);
         System.out.println("System displays the confirmation message: " + confirmationMessage);
+    }
+
+    @Then("the system rejects the registration with an error message {string}")
+    public void systemRejectsRegistration(String expectedErrorMessage) {
+        // Check if the error message matches the expected message
+        Assertions.assertEquals(expectedErrorMessage, errorMessage);
+        System.err.println("Error message: " + errorMessage);
     }
 }

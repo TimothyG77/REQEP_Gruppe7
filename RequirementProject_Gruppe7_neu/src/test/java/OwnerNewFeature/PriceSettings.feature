@@ -14,3 +14,15 @@ Feature: Managing Prices for Charging Locations
     And the owner selects the charging location "Park Avenue 5"
     When the owner sets the price for charging sessions to €5.00
     Then the system updates the price for charging sessions at "Park Avenue 5"
+
+      ############################################################
+      ############################################################
+      #######################Error-Case###########################
+      ############################################################
+      ############################################################
+
+  Scenario: Owner sets the price for a non-existent charging location
+    Given the owner is logged into their account
+    When the owner selects the charging location "Unknown Street"
+    Then the system displays following error message "Charging location not found"
+

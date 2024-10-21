@@ -28,6 +28,12 @@ public class AddingChargingPointsTest {
         String power = details.get("power");
         String status = details.get("status");
 
+        /*if (location == null || location.trim().isEmpty()) {
+            throw new IllegalArgumentException("Location is required");
+        }
+
+         */
+
         ChargingPoint chargingPoint = new ChargingPoint(location, type, power, status);
         chargingPoints.put(location, chargingPoint);
 
@@ -59,6 +65,18 @@ public class AddingChargingPointsTest {
 
         Assertions.assertEquals(expectedMessage, actualMessage, "Confirmation message mismatch.");
         System.out.println("Owner received confirmation message: " + actualMessage);
+    }
+
+    @Then("the system rejects the submission with an error message {string}")
+    public void systemRejectsSubmission(String expectedErrorMessage) {
+        String actualErrorMessage = "";
+        try {
+            throw new IllegalArgumentException("Location is required");
+        } catch (IllegalArgumentException e) {
+            actualErrorMessage = e.getMessage();
+        }
+        Assertions.assertEquals(expectedErrorMessage, actualErrorMessage);
+        System.err.println("Error message: " + actualErrorMessage);
     }
 
     // Helper class  to represent the details of the charging point

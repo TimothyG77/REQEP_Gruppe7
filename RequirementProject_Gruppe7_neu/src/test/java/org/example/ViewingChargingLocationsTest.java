@@ -10,6 +10,8 @@ public class ViewingChargingLocationsTest {
     private String ownerStatus = "LOGGED_IN";
     private List<ChargingLocation> chargingLocations;
     private List<ChargingLocation> displayedLocations;
+    private String systemMessage;
+
 
     public ViewingChargingLocationsTest() {
         chargingLocations = new ArrayList<>();
@@ -30,11 +32,21 @@ public class ViewingChargingLocationsTest {
         System.out.println("Charging locations have been loaded into the system.");
     }
 
+    @Given("the system has no charging locations")
+    public void systemHasNoChargingLocations() {
+        chargingLocations.clear(); // Clear any existing locations to simulate no locations available
+        System.out.println("The system has no charging locations.");
+    }
+
     @When("the owner navigates to the {string} page")
     public void ownerNavigatesToPage(String page) {
         Assertions.assertEquals("LOGGED_IN", ownerStatus);
         if (page.equalsIgnoreCase("Charging Locations")) {
-            displayedLocations.addAll(chargingLocations);
+            if (chargingLocations.isEmpty()) {
+                systemMessage = "No charging locations available";
+            } else {
+                displayedLocations.addAll(chargingLocations);
+            }
             System.out.println("Owner navigated to the Charging Locations page.");
         }
     }
@@ -51,6 +63,12 @@ public class ViewingChargingLocationsTest {
             Assertions.assertEquals(expectedRow.get(3), expectedRow.get(3), actualLocation.getStatus());
         }
         System.out.println("System displays the list of charging locations as expected.");
+    }
+
+    @Then("the system displays a error message with the following sentence {string}")
+    public void systemDisplaysMessage(String expectedMessage) {
+        Assertions.assertEquals(expectedMessage, systemMessage);
+        System.err.println("System displayed message: " + systemMessage);
     }
 
     private class ChargingLocation {

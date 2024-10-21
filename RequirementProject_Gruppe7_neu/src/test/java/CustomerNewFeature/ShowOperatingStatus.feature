@@ -23,3 +23,17 @@ Feature: Managing Charging Point Operating Status
     When the owner selects "Set Status"
     And the owner sets the status to "Occupied"
     Then the system updates the status of "Elm Street 3" to "Occupied"
+
+     ############################################################
+     ############################################################
+     ########################Error-Case##########################
+     ############################################################
+     ############################################################
+
+  Scenario: Owner sets an invalid status for a charging point
+    Given the owner is logged into their account
+    And the owner has an existing charging point at "Main Street 1"
+    When the owner sets the status to "InvalidStatus"
+    Then the system rejects the status update with an error message "Invalid status value"
+
+

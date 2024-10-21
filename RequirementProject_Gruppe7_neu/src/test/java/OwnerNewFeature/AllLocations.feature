@@ -16,3 +16,16 @@ Feature: Viewing List of Charging Locations
       | 002      | Park Avenue 5 | DC     | Occupied   |
       | 003      | Elm Street 3  | AC     | Out of Service |
 
+
+     ############################################################
+     ############################################################
+     ########################Error-Case##########################
+     ############################################################
+     ############################################################
+
+  Scenario: Owner attempts to view charging locations but none exist
+    Given the system has no charging locations
+    When the owner navigates to the "Charging Locations" page
+    Then the system displays a error message with the following sentence "No charging locations available"
+
+

@@ -20,3 +20,15 @@ Feature: Managing Charging Point Status
     When the owner selects "Set Status"
     And the owner sets the status to "Out of Service"
     Then the system updates the status of "Elm Street 3" to "Out of Service"
+
+     ############################################################
+     ############################################################
+     ########################Error-Case##########################
+     ############################################################
+     ############################################################
+
+  Scenario: Owner attempts to set a charging point status without logging in
+    Given the owner is not logged into their account
+    When the owner selects "Set Status"
+    Then the system rejects the action with an error message "Owner must be logged in"
+

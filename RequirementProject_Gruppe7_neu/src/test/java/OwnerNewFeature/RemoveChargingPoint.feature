@@ -17,3 +17,16 @@ Feature: Removing AC/DC Charging Points
     And the owner confirms the removal
     Then the system removes the DC charging point from "Park Avenue 5"
 
+     ############################################################
+      ############################################################
+      #######################Error-Case###########################
+      ############################################################
+      ############################################################
+
+  Scenario: Owner attempts to remove a non-existent charging point
+    Given the owner is logged in to remove charging points
+    When the owner selects "Remove Charging Point" for "Nonexistent Location"
+    Then the system displays an simple error message "Charging point not found"
+
+
+

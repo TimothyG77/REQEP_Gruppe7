@@ -12,6 +12,7 @@ public class TopUpAccountSteps {
     private PaymentDetails paymentDetails;
     private String confirmationMessage;
     private double balance;
+    private String errorMessage;
 
 
     @Given("the customer is on the \"Top Up Account\" page")
@@ -44,16 +45,36 @@ public class TopUpAccountSteps {
         paymentDetails.setCvv(Integer.parseInt(data.get("cvv")));
     }
 
+    @When("the customer enters invalid credit card details:")
+    public void the_customer_enters_invalid_credit_card_details(io.cucumber.datatable.DataTable dataTable) {
+        Map<String, String> data = dataTable.asMap(String.class, String.class);
+        paymentDetails.setCardNumber(data.get("cardNumber"));
+        paymentDetails.setExpiryDate(data.get("expiryDate"));
+        paymentDetails.setCvv(Integer.parseInt(data.get("cvv")));
+        System.out.println("Entered invalid credit card details.");
+    }
+
     @When("the customer submits the top-up request")
     public void the_customer_submits_the_top_up_request() {
-        customer.topUp(paymentDetails);
-        balance = customer.getBalance();
+        if (paymentDetails.isValid()) {
+            customer.topUp(paymentDetails);
+            balance = customer.getBalance();
+        } else {
+            errorMessage = "Payment failed due to invalid card details";
+        }
+
     }
 
     @Then("the system processes the payment")
     public void the_system_processes_the_payment() {
         assertNotNull(paymentDetails);
         assertTrue(paymentDetails.getCashAmount() > 0);
+    }
+
+    @Then("the system rejects the payment with an error message {string}")
+    public void the_system_rejects_the_payment_with_an_error_message(String expectedErrorMessage) {
+        assertEquals(expectedErrorMessage, errorMessage);
+        System.err.println("Error message: " + errorMessage);
     }
 
 
