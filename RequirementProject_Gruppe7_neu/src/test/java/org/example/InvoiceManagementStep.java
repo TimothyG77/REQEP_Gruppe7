@@ -6,14 +6,14 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagingAndViewingInvoicesTest {
+public class InvoiceManagementStep {
 
     private String ownerStatus;
     private Map<String, Invoice> invoices;
     private Invoice selectedInvoice;
     private String systemMessage;
 
-    public ManagingAndViewingInvoicesTest() {
+    public InvoiceManagementStep() {
         invoices = new HashMap<>();
     }
 

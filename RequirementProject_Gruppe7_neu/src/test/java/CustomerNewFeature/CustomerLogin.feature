@@ -40,6 +40,17 @@ Feature: Customer Login
     And the customer submits the login form
     Then the system rejects the login attempt with an error message "Invalid credentials"
 
+    #############################################################
+    #############################################################
+    #########################Edge-Case###########################
+    #############################################################
+    #############################################################
 
-
-
+  Scenario: Customer fails to log in with an empty password
+    Given the customer is on the login page
+    When the customer enters the following login details:
+      | field    | value                 |
+      | email    | customer@gmail.com     |
+      | password |                       |
+    And the customer submits the login form
+    Then the system rejects the login attempt with an error message "Password cannot be empty"

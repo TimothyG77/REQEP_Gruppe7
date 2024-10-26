@@ -34,6 +34,24 @@ Feature: Customer Registration
     And the customer submits the registration form
     Then the system rejects the registration with an error message "Payment details are required"
 
+    #############################################################
+    #############################################################
+    #########################Edge-Case###########################
+    #############################################################
+    #############################################################
+
+  Scenario: Customer fails to register with invalid email format
+    Given the customer is on the registration page
+    When the customer enters the following details:
+      | field         | value              |
+      | email         | customergmail.com  |
+      | phone         | +491234567890      |
+      | password      | Password!123       |
+      | paymentMethod | Credit Card        |
+      | paymentDetails| 1234 5678 9012 3456|
+    And the customer submits the registration form
+    Then the system rejects the registration with an error message "Invalid email format! Must contain an @"
+
 
 
 

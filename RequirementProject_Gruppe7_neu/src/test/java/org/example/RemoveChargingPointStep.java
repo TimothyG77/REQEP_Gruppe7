@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RemovingChargingPointsTest {
+public class RemoveChargingPointStep {
 
     private String ownerStatus;
     private Map<String, ChargingPoint> chargingPoints;
@@ -15,7 +15,7 @@ public class RemovingChargingPointsTest {
 
     private String errorMessage;
 
-    public RemovingChargingPointsTest() {
+    public RemoveChargingPointStep() {
         chargingPoints = new HashMap<>();
     }
 

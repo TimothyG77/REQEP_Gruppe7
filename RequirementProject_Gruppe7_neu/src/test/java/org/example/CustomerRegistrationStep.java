@@ -56,17 +56,28 @@ public class CustomerRegistrationStep {
 
     @And("the customer submits the registration form")
     public void customerSubmitsRegistrationForm() {
-        // Simulate form submission and validate the information
-        if (emailInput != null && phoneInput != null && passwordInput != null &&
-                paymentMethodInput != null && paymentDetailsInput != null) {
-            // Assume validation and registration success with given valid inputs
+        // Validate the email format and other required information
+        if (!isValidEmail(emailInput)) {
+            isRegistered = false;
+            errorMessage = "Invalid email format! Must contain an @";
+        } else if (emailInput != null && phoneInput != null && passwordInput != null &&
+                paymentMethodInput != null && paymentDetailsInput != null && isValidEmail(emailInput)) {
             isRegistered = true;
+            confirmationMessage = "Registration successful!";
         } else {
             isRegistered = false;
             errorMessage = "Payment details are required";
         }
         System.out.println("Customer submitted the registration form.");
     }
+
+    // Helper method to validate email format
+    private boolean isValidEmail(String email) {
+        // Basic email pattern check: checks for the presence of "@" and a domain.
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email != null && email.matches(emailRegex);
+    }
+
 
     @Then("the system creates a new account for the customer")
     public void systemCreatesNewAccount() {

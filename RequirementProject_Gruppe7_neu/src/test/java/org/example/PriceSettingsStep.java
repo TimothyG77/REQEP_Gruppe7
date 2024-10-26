@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagingPricesForChargingLocationsTest {
+public class PriceSettingsStep {
 
-    private String ownerStatus;
+    private String ownerStatus = "LOGGED_IN";
     private Map<String, ChargingLocation> chargingLocations;
     private ChargingLocation selectedChargingLocation;
     private String confirmationMessage;
     private String errorMessage;
 
-    public ManagingPricesForChargingLocationsTest() {
+    public PriceSettingsStep() {
         chargingLocations = new HashMap<>();
     }
 
@@ -36,18 +36,18 @@ public class ManagingPricesForChargingLocationsTest {
         }
     }
 
-    @Then("the system displays following error message {string}")
-    public void systemDisplaysErrorMessage(String expectedErrorMessage) {
-        Assertions.assertEquals(expectedErrorMessage, errorMessage, "Error message must match expected message");
-        System.err.println("System displayed error message: " + errorMessage);
-    }
-
     @When("the owner sets the price per kWh to €{double}")
     public void ownerSetsPricePerKwh(double pricePerKwh) {
         Assertions.assertNotNull(selectedChargingLocation, "Charging location must be selected to set prices");
-        selectedChargingLocation.setPricePerKwh(String.valueOf(pricePerKwh));
-        confirmationMessage = "Price per kWh updated successfully to " + pricePerKwh + ".";
-        System.out.println(confirmationMessage);
+
+        if (pricePerKwh < 0) {
+            errorMessage = "Price per kWh must be positive";
+            System.err.println("Error: " + errorMessage);
+        } else {
+            selectedChargingLocation.setPricePerKwh(String.valueOf(pricePerKwh));
+            confirmationMessage = "Price per kWh updated successfully to " + pricePerKwh + ".";
+            System.out.println(confirmationMessage);
+        }
     }
 
     @When("the owner sets the price for charging sessions to €{double}")
@@ -56,6 +56,12 @@ public class ManagingPricesForChargingLocationsTest {
         selectedChargingLocation.setPricePerSession(String.valueOf(pricePerSession));
         confirmationMessage = "Price for charging sessions updated successfully to " + pricePerSession + ".";
         System.out.println(confirmationMessage);
+    }
+
+    @Then("the system displays following error message {string}")
+    public void systemDisplaysErrorMessage(String expectedErrorMessage) {
+        Assertions.assertEquals(expectedErrorMessage, errorMessage, "Error message must match expected message");
+        System.err.println("System displayed error message: " + errorMessage);
     }
 
     @Then("the system updates the price per kWh for {string}")

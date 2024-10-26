@@ -53,15 +53,24 @@ public class CustomerLoginStep {
 
     @And("the customer submits the login form")
     public void customerSubmitsLoginForm() {
-        // Simulating form submission
-        if ((emailInput != null && emailInput.equals("customer@gmail.com") && passwordInput.equals("Password!123")) ||
-                (phoneInput != null && phoneInput.equals("+491234567890") && passwordInput.equals("Password!123"))) {
-            isAuthenticated = true;
+        // Simuliert die Formularübermittlung
+        if ((emailInput != null && !emailInput.isEmpty()) &&
+                (passwordInput != null && !passwordInput.isEmpty())) {
+
+            if ((emailInput.equals("customer@gmail.com") && passwordInput.equals("Password!123")) ||
+                    (phoneInput != null && phoneInput.equals("+491234567890") && passwordInput.equals("Password!123"))) {
+                isAuthenticated = true;
+            } else {
+                isAuthenticated = false;
+                errorMessage = "Invalid credentials";
+                System.err.println("Authentication failed with email: " + emailInput + " and phone: " + phoneInput);
+            }
         } else {
             isAuthenticated = false;
-            errorMessage = "Invalid credentials";
-            System.out.println("Authentication failed with email: " + emailInput + " and phone: " + phoneInput);
-
+            if (passwordInput == null || passwordInput.isEmpty()) {
+                errorMessage = "Password cannot be empty";
+            }
+            System.err.println("Authentication failed due to empty password.");
         }
         System.out.println("Customer submitted the login form.");
     }

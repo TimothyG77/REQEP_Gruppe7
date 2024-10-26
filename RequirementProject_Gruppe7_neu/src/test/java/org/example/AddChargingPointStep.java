@@ -6,12 +6,14 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddingChargingPointsTest {
+public class AddChargingPointStep {
 
     private String ownerStatus = "LOGGED_IN";
     private Map<String, ChargingPoint> chargingPoints;
+    private String errorMessage;
 
-    public AddingChargingPointsTest() {
+
+    public AddChargingPointStep() {
         chargingPoints = new HashMap<>();
     }
 
@@ -28,11 +30,17 @@ public class AddingChargingPointsTest {
         String power = details.get("power");
         String status = details.get("status");
 
-        /*if (location == null || location.trim().isEmpty()) {
-            throw new IllegalArgumentException("Location is required");
+        // Check if location or power is missing or empty
+        if (location == null || location.trim().isEmpty()) {
+            errorMessage = "Location is required";
+            System.err.println("Error: " + errorMessage);
+            return;
         }
-
-         */
+        if (power == null || power.trim().isEmpty()) {
+            errorMessage = "Power is required! Cannot be empty!";
+            System.err.println("Error: " + errorMessage);
+            return;
+        }
 
         ChargingPoint chargingPoint = new ChargingPoint(location, type, power, status);
         chargingPoints.put(location, chargingPoint);
@@ -69,14 +77,8 @@ public class AddingChargingPointsTest {
 
     @Then("the system rejects the submission with an error message {string}")
     public void systemRejectsSubmission(String expectedErrorMessage) {
-        String actualErrorMessage = "";
-        try {
-            throw new IllegalArgumentException("Location is required");
-        } catch (IllegalArgumentException e) {
-            actualErrorMessage = e.getMessage();
-        }
-        Assertions.assertEquals(expectedErrorMessage, actualErrorMessage);
-        System.err.println("Error message: " + actualErrorMessage);
+        Assertions.assertEquals(expectedErrorMessage, errorMessage, "Error message must match expected message");
+        System.err.println("Error message: " + errorMessage);
     }
 
     // Helper class  to represent the details of the charging point

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewingChargingLocationsTest {
+public class AllLocationsStep {
 
     private String ownerStatus = "LOGGED_IN";
     private List<ChargingLocation> chargingLocations;
@@ -13,7 +13,7 @@ public class ViewingChargingLocationsTest {
     private String systemMessage;
 
 
-    public ViewingChargingLocationsTest() {
+    public AllLocationsStep() {
         chargingLocations = new ArrayList<>();
         displayedLocations = new ArrayList<>();
     }

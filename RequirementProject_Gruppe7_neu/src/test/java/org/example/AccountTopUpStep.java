@@ -6,12 +6,12 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TopUpAccountSteps {
+public class AccountTopUpStep {
 
     private Customer customer;
     private PaymentDetails paymentDetails;
     private String confirmationMessage;
-    private double balance;
+    private double balance = 50.00;
     private String errorMessage;
 
 
@@ -32,7 +32,7 @@ public class TopUpAccountSteps {
 
     @When("the customer enters the amount to top up as €{double}")
     public void the_customer_enters_the_amount_to_top_up_as(double amount) {
-        paymentDetails = new PaymentDetails(0.0, "1234");
+        paymentDetails = new PaymentDetails(balance, "1234");
         paymentDetails.setCashAmount(amount);
         System.out.println("Amount entered: " + amount);
     }
@@ -43,6 +43,7 @@ public class TopUpAccountSteps {
         paymentDetails.setCardNumber(data.get("cardNumber"));
         paymentDetails.setExpiryDate(data.get("expiryDate"));
         paymentDetails.setCvv(Integer.parseInt(data.get("cvv")));
+        System.out.println("Entered valid credit card details.");
     }
 
     @When("the customer enters invalid credit card details:")
@@ -59,8 +60,12 @@ public class TopUpAccountSteps {
         if (paymentDetails.isValid()) {
             customer.topUp(paymentDetails);
             balance = customer.getBalance();
+            System.out.println("Top-up successful. New balance: " + balance);
+
         } else {
             errorMessage = "Payment failed due to invalid card details";
+            System.err.println(errorMessage);
+
         }
 
     }
@@ -82,6 +87,8 @@ public class TopUpAccountSteps {
     public void the_new_balance_is_updated_to(double expectedBalance) {
         balance = expectedBalance;
         assertEquals(expectedBalance, balance);
+        System.out.println("New balance updated to: " + balance);
+
     }
 
     @When("the customer selects \"Cash\" as the payment method")

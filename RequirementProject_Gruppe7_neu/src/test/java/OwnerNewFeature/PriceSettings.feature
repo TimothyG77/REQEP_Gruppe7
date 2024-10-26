@@ -26,3 +26,15 @@ Feature: Managing Prices for Charging Locations
     When the owner selects the charging location "Unknown Street"
     Then the system displays following error message "Charging location not found"
 
+      ############################################################
+      ############################################################
+      #######################Edge-Case############################
+      ############################################################
+      ############################################################
+
+  Scenario: Owner sets a negative price per kWh for a charging location
+    Given the owner has an existing charging location at "Main Street 1"
+    And the owner selects the charging location "Main Street 1"
+    When the owner sets the price per kWh to €-0.30
+    Then the system displays following error message "Price per kWh must be positive"
+

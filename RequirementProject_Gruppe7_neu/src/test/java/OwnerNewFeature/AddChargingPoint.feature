@@ -44,3 +44,20 @@ Feature: Adding AC/DC Charging Points
     And the owner submits the form
     Then the system rejects the submission with an error message "Location is required"
 
+     ############################################################
+     ############################################################
+     ########################Edge-Case###########################
+     ############################################################
+     ############################################################
+
+  Scenario: Owner fails to add a charging point with missing power
+    Given the owner is on the "Add Charging Point" page
+    When the owner enters the following details:
+      | field      | value      |
+      | location   | Elm Street 2 |
+      | type       | DC         |
+      | power      |            |
+      | status     | Available  |
+    And the owner submits the form
+    Then the system rejects the submission with an error message "Power is required! Cannot be empty!"
+

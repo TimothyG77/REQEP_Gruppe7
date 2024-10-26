@@ -4,11 +4,10 @@ import io.cucumber.java.en.*;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FindingChargingLocationTest {
+public class SelectChargingPointStep {
 
     private List<Map<String, String>> availableChargingLocations;
     private List<Map<String, String>> displayedChargingLocations;

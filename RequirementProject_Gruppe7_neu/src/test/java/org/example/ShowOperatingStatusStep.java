@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManageChargingPointStatusTest {
+public class ShowOperatingStatusStep {
 
     private Map<String, String> chargingPoints;
     private String selectedChargingPoint;

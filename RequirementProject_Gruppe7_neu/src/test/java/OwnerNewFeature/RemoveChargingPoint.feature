@@ -29,4 +29,3 @@ Feature: Removing AC/DC Charging Points
     Then the system displays an simple error message "Charging point not found"
 
 
-

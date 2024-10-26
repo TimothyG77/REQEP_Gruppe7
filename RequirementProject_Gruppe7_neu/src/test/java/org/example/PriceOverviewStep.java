@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewingPriceOverviewTest {
+public class PriceOverviewStep {
 
     private Map<String, Map<String, String>> pricingInformation;
     private Map<String, String> selectedLocationDetails;

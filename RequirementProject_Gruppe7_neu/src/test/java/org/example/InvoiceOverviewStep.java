@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewingInvoiceTest {
+public class InvoiceOverviewStep {
 
     private Map<String, String> chargingSessionDetails;
     private Map<String, String> displayedInvoiceDetails;
